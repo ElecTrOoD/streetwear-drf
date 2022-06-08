@@ -117,6 +117,13 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# S3 config
+DEFAULT_FILE_STORAGE = 'storage_backends.MediaStorage'
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_S3_ENDPOINT_URL = os.getenv('AWS_S3_ENDPOINT_URL')
+AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
