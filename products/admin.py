@@ -24,8 +24,8 @@ class ProductStockInline(admin.TabularInline):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('title', 'price', 'ordered', 'product_code')
+    readonly_fields = ('uid', 'slug',)
     inlines = (CharacteristicInline, ProductImageInline, ProductStockInline)
-    exclude = ('uid',)
 
 
 @admin.register(Characteristic)
@@ -56,4 +56,3 @@ class SizeAdmin(admin.ModelAdmin):
 @admin.register(ProductStock)
 class ProductStockAdmin(admin.ModelAdmin):
     list_display = ('product_uid', 'color', 'size', 'amount')
-    exclude = ('uid',)
