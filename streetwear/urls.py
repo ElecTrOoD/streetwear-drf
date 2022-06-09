@@ -23,7 +23,7 @@ from rest_framework.routers import DefaultRouter
 from products.views import ProductModelViewSet
 
 schema_view = get_schema_view(openapi.Info(
-    title="ToDo",
+    title="StreetWear",
     default_version='1.0',
     description="Documentation for StreetWear API",
     contact=openapi.Contact(email="admin@admin.local"),
