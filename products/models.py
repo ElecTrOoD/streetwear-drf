@@ -3,6 +3,7 @@ from uuid import uuid4
 from django.db import models
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
+from pytils.translit import slugify
 
 from products.storage_backends import ImagesStorage
 
@@ -22,6 +23,11 @@ class Product(models.Model):
     product_code = models.PositiveIntegerField(unique=True)
     ordered = models.PositiveIntegerField(blank=True, default=0)
     categories = models.ManyToManyField(Category, blank=True)
+    slug = models.SlugField(blank=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title
