@@ -16,6 +16,12 @@ class Category(models.Model):
 
 
 class Product(models.Model):
+    GENDER = (
+        ('M', 'Мужской'),
+        ('F', 'Женский'),
+        ('U', 'Унисекс'),
+    )
+
     uid = models.UUIDField(primary_key=True, default=uuid4)
     title = models.CharField(max_length=128, unique=True)
     price = models.PositiveIntegerField()
@@ -24,6 +30,7 @@ class Product(models.Model):
     ordered = models.PositiveIntegerField(blank=True, default=0)
     categories = models.ManyToManyField(Category, blank=True)
     slug = models.SlugField(blank=True)
+    gender = models.CharField(max_length=1, choices=GENDER, default='U')
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
