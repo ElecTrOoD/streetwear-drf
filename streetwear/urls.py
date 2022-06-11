@@ -20,7 +20,7 @@ from drf_yasg.views import get_schema_view
 from rest_framework.permissions import AllowAny
 from rest_framework.routers import DefaultRouter
 
-from products.views import ProductModelViewSet
+from products.views import ProductModelViewSet, CategoryModelListApiView, SizeModelListApiView, ColorModelListApiView
 
 schema_view = get_schema_view(openapi.Info(
     title="StreetWear",
@@ -32,6 +32,9 @@ schema_view = get_schema_view(openapi.Info(
 
 router = DefaultRouter()
 router.register('products', ProductModelViewSet)
+router.register('categories', CategoryModelListApiView)
+router.register('colors', ColorModelListApiView)
+router.register('sizes', SizeModelListApiView)
 
 urlpatterns = [
     path('grappelli/', include('grappelli.urls')),

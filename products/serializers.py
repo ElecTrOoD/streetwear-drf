@@ -1,19 +1,13 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer, HyperlinkedModelSerializer
 
-from products.models import Product, Characteristic, Category, ProductImage, ProductStock
+from products.models import Product, Characteristic, Category, ProductImage, ProductStock, Color
 
 
 class CharacteristicModelSerializer(ModelSerializer):
     class Meta:
         model = Characteristic
         fields = ('text',)
-
-
-class CategoryModelSerializer(ModelSerializer):
-    class Meta:
-        model = Category
-        fields = ('name',)
 
 
 class ProductImageModelSerializer(HyperlinkedModelSerializer):
@@ -41,3 +35,21 @@ class ProductModelSerializer(ModelSerializer):
         model = Product
         fields = '__all__'
         lookup_field = 'slug'
+
+
+class CategoryModelSimpleSerializer(ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ('name',)
+
+
+class ColorModelSimpleSerializer(ModelSerializer):
+    class Meta:
+        model = Color
+        fields = ('name',)
+
+
+class SizeModelSimpleSerializer(ModelSerializer):
+    class Meta:
+        model = Color
+        fields = ('name',)
