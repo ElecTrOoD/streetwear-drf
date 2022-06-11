@@ -9,7 +9,11 @@ from products.storage_backends import ImagesStorage
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=128, unique=True)
+    name = models.CharField(max_length=128, unique=True, verbose_name='Название')
+
+    class Meta:
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
 
     def __str__(self):
         return self.name
@@ -22,15 +26,19 @@ class Product(models.Model):
         ('U', 'Унисекс'),
     )
 
-    uid = models.UUIDField(primary_key=True, default=uuid4)
-    title = models.CharField(max_length=128, unique=True)
-    price = models.PositiveIntegerField()
-    care = models.CharField(max_length=128)
-    product_code = models.PositiveIntegerField(unique=True)
-    ordered = models.PositiveIntegerField(blank=True, default=0)
-    categories = models.ManyToManyField(Category, blank=True)
-    slug = models.SlugField(blank=True)
-    gender = models.CharField(max_length=1, choices=GENDER, default='U')
+    uid = models.UUIDField(primary_key=True, default=uuid4, verbose_name='Идентификатор')
+    title = models.CharField(max_length=128, unique=True, verbose_name='Название')
+    price = models.PositiveIntegerField(verbose_name='Цена')
+    care = models.CharField(max_length=128, verbose_name='Уход')
+    product_code = models.PositiveIntegerField(unique=True, verbose_name='Код товара')
+    ordered = models.PositiveIntegerField(blank=True, default=0, verbose_name='Заказов')
+    categories = models.ManyToManyField(Category, blank=True, verbose_name='Категории')
+    slug = models.SlugField(blank=True, verbose_name='Буквенная ссылка')
+    gender = models.CharField(max_length=1, choices=GENDER, default='U', verbose_name='Пол')
+
+    class Meta:
+        verbose_name = 'Товар'
+        verbose_name_plural = 'Товары'
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
@@ -41,16 +49,26 @@ class Product(models.Model):
 
 
 class Characteristic(models.Model):
-    text = models.CharField(max_length=255)
-    product_uid = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='characteristics')
+    text = models.CharField(max_length=255, verbose_name='Текст')
+    product_uid = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='characteristics',
+                                    verbose_name='Идентификатор товара')
+
+    class Meta:
+        verbose_name = 'Характеристика'
+        verbose_name_plural = 'Характеристики'
 
     def __str__(self):
         return self.text
 
 
 class ProductImage(models.Model):
-    product_uid = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
-    image = models.ImageField(storage=ImagesStorage)
+    product_uid = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images',
+                                    verbose_name='Идентификатор товара')
+    image = models.ImageField(storage=ImagesStorage, verbose_name='Изображение')
+
+    class Meta:
+        verbose_name = 'Изображение'
+        verbose_name_plural = 'Изображения'
 
     def delete(self, using=None, keep_parents=False):
         self.image.delete()
@@ -58,26 +76,39 @@ class ProductImage(models.Model):
 
 
 class Color(models.Model):
-    uid = models.UUIDField(primary_key=True, default=uuid4)
-    name = models.CharField(max_length=128, unique=True)
+    uid = models.UUIDField(primary_key=True, default=uuid4, verbose_name='Идентификатор')
+    name = models.CharField(max_length=128, unique=True, verbose_name='Название')
+
+    class Meta:
+        verbose_name = 'Цвет'
+        verbose_name_plural = 'Цвета'
 
     def __str__(self):
         return self.name
 
 
 class Size(models.Model):
-    uid = models.UUIDField(primary_key=True, default=uuid4)
-    name = models.CharField(max_length=128, unique=True)
+    uid = models.UUIDField(primary_key=True, default=uuid4, verbose_name='Идентификатор')
+    name = models.CharField(max_length=128, unique=True, verbose_name='Название')
+
+    class Meta:
+        verbose_name = 'Размер'
+        verbose_name_plural = 'Размеры'
 
     def __str__(self):
         return self.name
 
 
 class ProductStock(models.Model):
-    product_uid = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='stock')
-    color = models.ForeignKey(Color, on_delete=models.SET_NULL, null=True)
-    size = models.ForeignKey(Size, on_delete=models.SET_NULL, null=True)
-    amount = models.PositiveIntegerField(default=0)
+    product_uid = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='stock',
+                                    verbose_name='Идентификатор продукта')
+    color = models.ForeignKey(Color, on_delete=models.SET_NULL, null=True, verbose_name='Цвет')
+    size = models.ForeignKey(Size, on_delete=models.SET_NULL, null=True, verbose_name='Размер')
+    amount = models.PositiveIntegerField(default=0, verbose_name='Запас')
+
+    class Meta:
+        verbose_name = 'Запас'
+        verbose_name_plural = 'Запасы'
 
     def __str__(self):
         return self.product_uid.title
